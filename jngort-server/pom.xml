@@ -21,6 +21,7 @@
             <groupId>com.github.whymesay</groupId>
             <artifactId>jngort-common</artifactId>
         </dependency>
+
     </dependencies>
 
 </project>

@@ -22,7 +22,7 @@
     <dependencies>
         <dependency>
             <groupId>com.github.whymesay</groupId>
-            <artifactId>jngort-server</artifactId>
+            <artifactId>jngort-common</artifactId>
         </dependency>
     </dependencies>
 </project>
