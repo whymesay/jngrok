@@ -33,7 +33,7 @@ public class JngortClientBootstrap {
                             p.addLast(new RequestHandler());
                         }
                     });
-            ChannelFuture f = b.connect("localhost", 8080).sync();
+            ChannelFuture f = b.connect("localhost", 2333).sync();
             f.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();

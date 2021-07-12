@@ -1,6 +1,7 @@
 package com.github.whymesay.server;
 
-import com.github.whymesay.server.handler.ResponseHandler;
+import com.github.whymesay.server.client.ClientChannelHolder;
+import com.github.whymesay.server.handler.FrontHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -33,16 +34,18 @@ public class JngortServerBootstrap {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             // 因为 NettyServerHandler 被标注为 @Sharable，所以可以使用相同的实例
-
                             socketChannel.pipeline()
                                     .addLast(new LoggingHandler(LogLevel.DEBUG))
-                                    .addLast(new ResponseHandler());
+                                    .addLast(new FrontHandler());
                         }
                     })
-                    .option(ChannelOption.SO_BACKLOG, 200)
+                    .option(ChannelOption.TCP_NODELAY, true)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             // 异步绑定服务器，调用 sync() 方法阻塞等待直到绑定完成。
             ChannelFuture future = bootstrap.bind(8080).sync();
+            new Thread(() -> {
+                new ClientChannelHolder().init();
+            }).start();
             // 获取 channel 的 closeFuture，并且阻塞直到它完成。
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
