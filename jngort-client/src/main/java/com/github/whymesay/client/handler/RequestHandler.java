@@ -1,6 +1,7 @@
 package com.github.whymesay.client.handler;
 
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -8,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * @author whymesay
- * @date 2021/7/1122:50
+ * @date 2021/7/11 22:50
  */
 public class RequestHandler extends ChannelInboundHandlerAdapter {
     @Override
@@ -19,7 +20,9 @@ public class RequestHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println("客户端收到消息");
-        super.channelRead(ctx, msg);
+        //后端服务连接 转发过去
+        Channel connect = ProxyForwardUtil.connect("127.0.0.1", 8000);
+        connect.writeAndFlush(msg);
     }
 
     @Override

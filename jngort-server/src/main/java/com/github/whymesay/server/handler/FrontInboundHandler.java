@@ -1,18 +1,23 @@
 package com.github.whymesay.server.handler;
 
-import com.github.whymesay.server.client.ClientChannelHolder;
+import com.github.whymesay.server.FrontClientHolder;
+import com.github.whymesay.server.JngorkClientHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 /**
+ * 前端数据传入
+ *
  * @author whymesay
- * @date 2021/7/1122:57
+ * @date 2021/7/11 22:57
  */
-public class FrontHandler extends ChannelInboundHandlerAdapter {
+public class FrontInboundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ClientChannelHolder.channel.writeAndFlush(msg);
+        FrontClientHolder.frontClientChannel = ctx.channel();
+        //转发给客户端
+        JngorkClientHolder.jngorkClientChannel.writeAndFlush(msg);
     }
 
     @Override

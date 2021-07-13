@@ -1,21 +1,22 @@
 package com.github.whymesay.server.handler;
 
-import com.github.whymesay.server.client.ClientChannelHolder;
-import io.netty.buffer.Unpooled;
+import com.github.whymesay.server.FrontClientHolder;
+import com.github.whymesay.server.JngorkClientHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-import java.nio.charset.StandardCharsets;
-
 /**
  * @author whymesay
- * @date 2021/7/1122:57
+ * @date 2021/7/11 22:57
  */
-public class ClientHandler extends ChannelInboundHandlerAdapter {
+public class JngorkClientInHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ClientChannelHolder.channel = ctx.channel();
+        JngorkClientHolder.jngorkClientChannel = ctx.channel();
+        if (FrontClientHolder.frontClientChannel != null) {
+            FrontClientHolder.frontClientChannel.writeAndFlush(msg);
+        }
     }
 
     @Override

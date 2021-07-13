@@ -15,7 +15,7 @@ import io.netty.handler.logging.LoggingHandler;
 
 /**
  * @author whymesay
- * @date 2021/7/1122:19
+ * @date 2021/7/11 22:19
  */
 public class JngortClientBootstrap {
     public static void main(String[] args) {
@@ -34,6 +34,7 @@ public class JngortClientBootstrap {
                         }
                     });
             ChannelFuture f = b.connect("localhost", 2333).sync();
+            ChannelHolder.proxyServerChannel = f.channel();
             f.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();

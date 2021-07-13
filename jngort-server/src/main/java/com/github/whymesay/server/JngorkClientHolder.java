@@ -1,6 +1,6 @@
-package com.github.whymesay.server.client;
+package com.github.whymesay.server;
 
-import com.github.whymesay.server.handler.ClientHandler;
+import com.github.whymesay.server.handler.JngorkClientInHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -15,11 +15,11 @@ import io.netty.handler.logging.LoggingHandler;
 
 /**
  * @author whymesay
- * @date 2021/7/1222:45
+ * @date 2021/7/12 22:45
  */
-public class ClientChannelHolder {
+public class JngorkClientHolder {
 
-    public static Channel channel;
+    public static Channel jngorkClientChannel;
     public static ChannelFuture future;
 
     public void init() {
@@ -41,7 +41,7 @@ public class ClientChannelHolder {
                                 // 因为 NettyServerHandler 被标注为 @Sharable，所以可以使用相同的实例
                                 socketChannel.pipeline()
                                         .addLast(new LoggingHandler(LogLevel.DEBUG))
-                                        .addLast(new ClientHandler());
+                                        .addLast(new JngorkClientInHandler());
                             }
                         })
                         .option(ChannelOption.TCP_NODELAY, true)
